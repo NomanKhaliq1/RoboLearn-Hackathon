@@ -1,0 +1,130 @@
+/* HomepageFeatures V3 - True Bento Grid */
+
+.features {
+  padding: 2rem 0;
+  width: 100%;
+}
+
+.bentoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Card Wrapper */
+.moduleCardWrapper {
+  height: 100%;
+  display: flex;
+}
+
+/* Make the first item span 2 columns for asymmetric look */
+.moduleCardWrapper:nth-child(1) {
+  grid-column: span 2;
+}
+
+/* Make the last item span 3 columns (full width) or 2 depending on preference. 
+   Let's try a 2-1-1 layout or similar. */
+
+/* Card Styling */
+.moduleCard {
+  background-color: var(--card-background-color);
+  border: 1px solid var(--card-border-color);
+  border-radius: 24px;
+  padding: 2rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none !important;
+  /* Remove link underline */
+  width: 100%;
+}
+
+.moduleCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: flex-start;
+  /* Left align for premium feel */
+  text-align: left;
+}
+
+.featureIconWrapper {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--ifm-color-emphasis-100);
+  border-radius: 14px;
+  font-size: 1.75rem;
+  color: var(--ifm-font-color-base);
+}
+
+html[data-theme='dark'] .featureIconWrapper {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.featureTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ifm-font-color-base);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.featureDescription {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+.cardFooter {
+  margin-top: auto;
+}
+
+.moduleButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+  font-size: 0.95rem;
+  transition: gap 0.2s ease;
+}
+
+.moduleCard:hover .moduleButton {
+  gap: 0.75rem;
+  color: var(--ifm-color-primary-dark);
+}
+
+.buttonArrow {
+  font-size: 1.2rem;
+}
+
+/* Responsive */
+@media screen and (max-width: 996px) {
+  .bentoGrid {
+    grid-template-columns: 1fr;
+    /* Stack on mobile */
+  }
+
+  .moduleCardWrapper:nth-child(1) {
+    grid-column: span 1;
+  }
+
+  .moduleCard {
+    padding: 1.5rem;
+  }
+}

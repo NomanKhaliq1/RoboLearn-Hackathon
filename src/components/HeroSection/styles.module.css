@@ -1,0 +1,231 @@
+/* Hero Section V2 - Linear Style */
+
+.heroBanner {
+  position: relative;
+  padding: 8rem 0 6rem;
+  background-color: var(--ifm-background-color);
+  overflow: hidden;
+  border-bottom: 1px solid var(--card-border-color);
+}
+
+/* Background Effects */
+.heroBanner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(100, 100, 100, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100, 100, 100, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(circle at 50% 50%, black, transparent 80%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.heroBanner::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(37, 99, 235, 0.08) 0%, transparent 50%);
+  filter: blur(60px);
+  z-index: 0;
+}
+
+.heroShell {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Left Column: Copy */
+.heroCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  background: rgba(37, 99, 235, 0.1);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 999px;
+  color: var(--ifm-color-primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: fit-content;
+}
+
+.heroTitle {
+  font-size: 4rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  background: linear-gradient(180deg, var(--ifm-font-color-base) 0%, var(--ifm-color-emphasis-600) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.heroSubtitle {
+  font-size: 1.125rem;
+  color: var(--ifm-color-emphasis-600);
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.primaryButton {
+  padding: 0.875rem 1.75rem;
+  background-color: var(--ifm-font-color-base);
+  /* Inverted for high contrast */
+  color: var(--ifm-background-color);
+  font-weight: 600;
+  border-radius: 999px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.primaryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+  color: var(--ifm-background-color);
+  text-decoration: none;
+}
+
+.secondaryButton {
+  padding: 0.875rem 1.75rem;
+  background-color: transparent;
+  border: 1px solid var(--card-border-color);
+  color: var(--ifm-font-color-base);
+  font-weight: 600;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+}
+
+.secondaryButton:hover {
+  background-color: var(--ifm-color-emphasis-100);
+  color: var(--ifm-font-color-base);
+  text-decoration: none;
+}
+
+/* Right Column: Visual Panel */
+.heroPanel {
+  background: var(--card-background-color);
+  border: 1px solid var(--card-border-color);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Abstract UI Elements inside Panel */
+.panelHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--card-border-color);
+}
+
+.panelDot {
+  width: 12px;
+  height: 12px;
+  background-color: #ef4444;
+  border-radius: 50%;
+  box-shadow: 20px 0 0 #eab308, 40px 0 0 #22c55e;
+}
+
+.panelList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.panelList li {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.panelIcon {
+  width: 40px;
+  height: 40px;
+  background-color: var(--ifm-color-emphasis-100);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.panelText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.panelLabel {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ifm-font-color-base);
+}
+
+.panelDesc {
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-600);
+}
+
+/* Responsive */
+@media screen and (max-width: 996px) {
+  .heroShell {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    text-align: center;
+  }
+
+  .heroCopy {
+    align-items: center;
+  }
+
+  .heroTitle {
+    font-size: 3rem;
+  }
+
+  .buttons {
+    justify-content: center;
+  }
+
+  .heroPanel {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
