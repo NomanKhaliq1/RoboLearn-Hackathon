@@ -121,7 +121,7 @@
 
 /* Input Area */
 .chatkit-input-area {
-  padding: 16px;
+  padding: 0px;
   border: none !important;
   background-color: transparent !important;
   box-shadow: none !important;

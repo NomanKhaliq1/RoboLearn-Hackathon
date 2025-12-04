@@ -1,5 +1,5 @@
 // frontend/src/components/Auth/SignupForm.tsx
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { SignupData, UserPreferences } from '../../types/user';
 
 interface SignupFormProps {
@@ -7,6 +7,72 @@ interface SignupFormProps {
   isLoading: boolean;
   error: string | null;
 }
+
+// Custom Dropdown Component
+interface CustomSelectProps {
+  options: { value: string; label: string }[];
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}
+
+const CustomSelect: React.FC<CustomSelectProps> = ({ options, value, onChange, placeholder }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const selectedLabel = options.find(opt => opt.value === value)?.label || placeholder || 'Select...';
+
+  return (
+    <div className="custom-dropdown" ref={dropdownRef}>
+      <div
+        className={`custom-dropdown-trigger ${isOpen ? 'open' : ''}`}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span>{selectedLabel}</span>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+
+      {isOpen && (
+        <div className="custom-dropdown-menu">
+          {options.map((option) => (
+            <div
+              key={option.value}
+              className={`custom-dropdown-item ${value === option.value ? 'selected' : ''}`}
+              onClick={() => {
+                onChange(option.value);
+                setIsOpen(false);
+              }}
+            >
+              {option.label}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const SignupForm: React.FC<SignupFormProps> = ({ onSubmit, isLoading, error }) => {
   const [email, setEmail] = useState('');
@@ -29,128 +95,155 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSubmit, isLoading, error }) =
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
+    <form onSubmit={handleSubmit}>
+      {error && (
+        <div style={{
+          padding: '1rem',
+          backgroundColor: 'rgba(220, 38, 38, 0.1)',
+          border: '1px solid rgba(220, 38, 38, 0.2)',
+          borderRadius: '12px',
+          color: '#fca5a5',
+          marginBottom: '1.5rem',
+          fontSize: '0.9rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          backdropFilter: 'blur(4px)'
+        }}>
+          <span>⚠️</span>
+          <span>{error}</span>
+        </div>
+      )}
 
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+      {/* Row 1: Name & Email */}
+      <div className="auth-grid">
+        <div className="auth-input-group">
+          <label className="auth-label" htmlFor="name">
+            Full Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            className="auth-input"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            placeholder="John Doe"
+          />
+        </div>
 
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-          Name:
-        </label>
-        <input
-          type="text"
-          id="name"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
+        <div className="auth-input-group">
+          <label className="auth-label" htmlFor="email">
+            Email Address
+          </label>
+          <input
+            type="email"
+            id="email"
+            className="auth-input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            placeholder="john@example.com"
+          />
+        </div>
       </div>
 
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-          Email:
-        </label>
-        <input
-          type="email"
-          id="email"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-          Password:
+      {/* Row 2: Password (Full Width) */}
+      <div className="auth-input-group">
+        <label className="auth-label" htmlFor="password">
+          Password
         </label>
         <input
           type="password"
           id="password"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="auth-input"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={8}
+          placeholder="Min. 8 characters"
         />
       </div>
 
-      <h3 className="text-xl font-bold mt-6 mb-4">Personalization Questions</h3>
+      <div style={{ margin: '2rem 0 1.5rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}></div>
+      <h3 className="auth-subtitle" style={{ textAlign: 'left', marginBottom: '1.5rem', color: '#e2e8f0' }}>
+        Personalization
+      </h3>
 
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="level">
-          Your Programming Experience Level:
-        </label>
-        <select
-          id="level"
-          className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          value={level}
-          onChange={(e) => setLevel(e.target.value as UserPreferences['level'])}
-        >
-          <option value="beginner">Beginner</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="advanced">Advanced</option>
-        </select>
+      {/* Row 3: Experience & Languages */}
+      <div className="auth-grid">
+        <div className="auth-input-group">
+          <label className="auth-label">
+            Programming Experience
+          </label>
+          <CustomSelect
+            value={level}
+            onChange={(val) => setLevel(val as UserPreferences['level'])}
+            options={[
+              { value: 'beginner', label: 'Beginner' },
+              { value: 'intermediate', label: 'Intermediate' },
+              { value: 'advanced', label: 'Advanced' }
+            ]}
+          />
+        </div>
+
+        <div className="auth-input-group">
+          <label className="auth-label" htmlFor="languages">
+            Programming Languages
+          </label>
+          <input
+            type="text"
+            id="languages"
+            className="auth-input"
+            value={languages}
+            onChange={(e) => setLanguages(e.target.value)}
+            placeholder="e.g., Python, JavaScript, C++"
+          />
+        </div>
       </div>
 
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="languages">
-          Programming Languages you know (comma-separated):
-        </label>
-        <input
-          type="text"
-          id="languages"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          value={languages}
-          onChange={(e) => setLanguages(e.target.value)}
-          placeholder="e.g., Python, JavaScript, C++"
-        />
+      {/* Row 4: AI & Hardware */}
+      <div className="auth-grid">
+        <div className="auth-input-group">
+          <label className="auth-label">
+            AI/ML Experience
+          </label>
+          <CustomSelect
+            value={aiExperience}
+            onChange={(val) => setAiExperience(val as UserPreferences['aiExperience'])}
+            options={[
+              { value: 'none', label: 'None' },
+              { value: 'basic', label: 'Basic' },
+              { value: 'intermediate', label: 'Intermediate' },
+              { value: 'advanced', label: 'Advanced' }
+            ]}
+          />
+        </div>
+
+        <div className="auth-input-group">
+          <label className="auth-label">
+            Hardware Knowledge
+          </label>
+          <CustomSelect
+            value={hardwareKnowledge}
+            onChange={(val) => setHardwareKnowledge(val as UserPreferences['hardwareKnowledge'])}
+            options={[
+              { value: 'basic', label: 'Basic' },
+              { value: 'intermediate', label: 'Intermediate' },
+              { value: 'advanced', label: 'Advanced' }
+            ]}
+          />
+        </div>
       </div>
 
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="aiExperience">
-          Your AI/ML Experience:
-        </label>
-        <select
-          id="aiExperience"
-          className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          value={aiExperience}
-          onChange={(e) => setAiExperience(e.target.value as UserPreferences['aiExperience'])}
-        >
-          <option value="none">None</option>
-          <option value="basic">Basic</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="advanced">Advanced</option>
-        </select>
-      </div>
-
-      <div className="mb-6">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="hardwareKnowledge">
-          Your Hardware Knowledge:
-        </label>
-        <select
-          id="hardwareKnowledge"
-          className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          value={hardwareKnowledge}
-          onChange={(e) => setHardwareKnowledge(e.target.value as UserPreferences['hardwareKnowledge'])}
-        >
-          <option value="basic">Basic</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="advanced">Advanced</option>
-        </select>
-      </div>
-
-      <div className="flex items-center justify-between">
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          disabled={isLoading}
-        >
-          {isLoading ? 'Signing Up...' : 'Sign Up'}
-        </button>
-      </div>
+      <button
+        type="submit"
+        className="auth-button"
+        disabled={isLoading}
+        style={{ marginTop: '1rem' }}
+      >
+        {isLoading ? 'Creating Account...' : 'Sign Up'}
+      </button>
     </form>
   );
 };

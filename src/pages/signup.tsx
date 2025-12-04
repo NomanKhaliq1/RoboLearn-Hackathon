@@ -5,6 +5,7 @@ import Layout from '@theme/Layout';
 import SignupForm from '../components/Auth/SignupForm';
 import { authService } from '../services/authService';
 import { SignupData } from '../types/user';
+import Link from '@docusaurus/Link';
 
 const SignupPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -30,80 +31,35 @@ const SignupPage: React.FC = () => {
       title="Sign Up"
       description="Sign up for an account to personalize your Docusaurus experience."
     >
-      <main style={{
-        minHeight: 'calc(100vh - 60px)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
-        padding: '40px 20px'
-      }}>
-        <div style={{
-          width: '100%',
-          maxWidth: '500px',
-          margin: '0 auto'
-        }}>
-          {/* Header */}
-          <div style={{
-            textAlign: 'center',
-            marginBottom: '40px'
-          }}>
-            <h1 style={{
-              fontSize: '32px',
-              fontWeight: '700',
-              color: '#ffffff',
-              marginBottom: '8px',
-              textShadow: '0 2px 10px rgba(0,0,0,0.3)'
-            }}>
-              Create Account
+      <div className="auth-container">
+        <div className="auth-bg-circle auth-bg-circle-1"></div>
+        <div className="auth-bg-circle auth-bg-circle-2"></div>
+
+        <div className="auth-card" style={{ maxWidth: '900px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <h1 className="auth-title">
+              Create Account <span className="text-gradient">🚀</span>
             </h1>
-            <p style={{
-              fontSize: '16px',
-              color: '#9ca3af',
-              margin: 0
-            }}>
-              Join us to personalize your learning experience
+            <p className="auth-subtitle">
+              Join the future of Humanoid Robotics
             </p>
           </div>
 
-          {/* Form Card */}
-          <div style={{
-            backgroundColor: '#1f1f1f',
-            borderRadius: '16px',
-            padding: '40px',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)',
-            border: '1px solid #6a0dad'
-          }}>
-            <SignupForm onSubmit={handleSubmit} isLoading={isLoading} error={error} />
-          </div>
+          <SignupForm onSubmit={handleSubmit} isLoading={isLoading} error={error} />
 
-          {/* Footer */}
           <div style={{
+            marginTop: '2rem',
             textAlign: 'center',
-            marginTop: '24px'
+            color: '#94a3b8',
+            fontSize: '0.9rem'
           }}>
-            <p style={{
-              color: '#9ca3af',
-              fontSize: '14px'
-            }}>
-              Already have an account?{' '}
-              <a
-                href="/login"
-                style={{
-                  color: '#dc2626',
-                  fontWeight: '600',
-                  textDecoration: 'none',
-                  transition: 'color 0.2s ease'
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#ef4444'}
-                onMouseLeave={(e) => e.currentTarget.style.color = '#dc2626'}
-              >
-                Sign In
-              </a>
-            </p>
+            Already have an account?{' '}
+            <Link to="/login" className="auth-link">
+              Sign In
+            </Link>
           </div>
         </div>
-      </main>
+      </div>
     </Layout>
   );
 };

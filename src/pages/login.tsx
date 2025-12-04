@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { LoginData } from '../types/user';
 import Layout from '@theme/Layout';
 import { authService } from '../services/authService';
+import Link from '@docusaurus/Link';
 
 const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState<LoginData>({
@@ -10,7 +11,6 @@ const LoginPage: React.FC = () => {
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [focusedField, setFocusedField] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,156 +29,69 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const inputContainerStyle: React.CSSProperties = {
-    position: 'relative',
-    marginBottom: '24px'
-  };
-
-  const inputStyle: React.CSSProperties = {
-    width: '100%',
-    padding: '14px 48px 14px 16px',
-    backgroundColor: 'rgba(15, 23, 42, 0.6)',
-    border: '2px solid rgba(148, 163, 184, 0.2)',
-    borderRadius: '12px',
-    color: '#ffffff',
-    fontSize: '15px',
-    transition: 'all 0.3s ease',
-    outline: 'none',
-    fontWeight: '400'
-  };
-
-  const labelStyle: React.CSSProperties = {
-    display: 'block',
-    marginBottom: '10px',
-    color: '#e2e8f0',
-    fontSize: '14px',
-    fontWeight: '600',
-    letterSpacing: '0.3px'
-  };
-
-  const iconStyle: React.CSSProperties = {
-    position: 'absolute',
-    right: '16px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    fontSize: '18px',
-    cursor: 'pointer',
-    userSelect: 'none',
-    transition: 'transform 0.2s ease'
-  };
-
   return (
     <Layout title="Login" description="Login to access your personalized content">
-      <div style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '20px'
-      }}>
-        <div style={{
-          maxWidth: '440px',
-          width: '100%',
-          padding: '48px 40px',
-          background: 'rgba(30, 41, 59, 0.8)',
-          borderRadius: '24px',
-          boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid #6a0dad',
-        }}>
-          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-            <h1 style={{
-              fontSize: '32px',
-              fontWeight: '800',
-              color: '#000000',
-              marginBottom: '12px',
-              letterSpacing: '-0.5px'
-            }}>
-              Welcome Back! 👋
+      <div className="auth-container">
+        <div className="auth-bg-circle auth-bg-circle-1"></div>
+        <div className="auth-bg-circle auth-bg-circle-2"></div>
+
+        <div className="auth-card">
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <h1 className="auth-title">
+              Welcome Back! <span className="text-gradient">👋</span>
             </h1>
-            <p style={{
-              color: '#94a3b8',
-              fontSize: '15px',
-              fontWeight: '400'
-            }}>
-              Sign in to continue your learning journey
+            <p className="auth-subtitle">
+              Sign in to continue your journey into Physical AI
             </p>
           </div>
 
           <form onSubmit={handleSubmit}>
             {error && (
               <div style={{
-                padding: '14px 18px',
-                backgroundColor: 'rgba(127, 29, 29, 0.3)',
-                border: '1px solid rgba(220, 38, 38, 0.5)',
+                padding: '1rem',
+                backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                border: '1px solid rgba(220, 38, 38, 0.2)',
                 borderRadius: '12px',
-                color: '#fecaca',
-                marginBottom: '24px',
-                fontSize: '14px',
+                color: '#fca5a5',
+                marginBottom: '1.5rem',
+                fontSize: '0.9rem',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '12px',
-                backdropFilter: 'blur(10px)',
-                animation: 'slideIn 0.3s ease'
+                gap: '0.5rem',
+                backdropFilter: 'blur(4px)'
               }}>
-                <span style={{ flex: 1 }}>{error}</span>
+                <span>⚠️</span>
+                <span>{error}</span>
               </div>
             )}
 
             {/* Email */}
-            <div style={inputContainerStyle}>
-              <label style={labelStyle}>
-                <span style={{ marginRight: '6px' }}>📧</span>
+            <div className="auth-input-group">
+              <label className="auth-label">
                 Email Address
               </label>
               <input
+                className="auth-input"
                 type="email"
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                onFocus={() => setFocusedField('email')}
-                onBlur={() => setFocusedField(null)}
-                style={{
-                  ...inputStyle,
-                  borderColor: focusedField === 'email'
-                    ? '#dc2626'
-                    : formData.email
-                      ? 'rgba(148, 163, 184, 0.4)'
-                      : 'rgba(148, 163, 184, 0.2)',
-                  boxShadow: focusedField === 'email'
-                    ? '0 0 0 3px rgba(220, 38, 38, 0.1)'
-                    : 'none'
-                }}
                 placeholder="john@example.com"
                 autoComplete="email"
               />
             </div>
 
             {/* Password */}
-            <div style={inputContainerStyle}>
-              <label style={labelStyle}>
-                <span style={{ marginRight: '6px' }}>🔒</span>
+            <div className="auth-input-group">
+              <label className="auth-label">
                 Password
               </label>
               <input
+                className="auth-input"
                 type={showPassword ? 'text' : 'password'}
                 required
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                onFocus={() => setFocusedField('password')}
-                onBlur={() => setFocusedField(null)}
-                style={{
-                  ...inputStyle,
-                  borderColor: focusedField === 'password'
-                    ? '#dc2626'
-                    : formData.password
-                      ? 'rgba(148, 163, 184, 0.4)'
-                      : 'rgba(148, 163, 184, 0.2)',
-                  boxShadow: focusedField === 'password'
-                    ? '0 0 0 3px rgba(220, 38, 38, 0.1)'
-                    : 'none'
-                }}
                 placeholder="Enter your password"
                 autoComplete="current-password"
               />
@@ -187,85 +100,23 @@ const LoginPage: React.FC = () => {
             {/* Submit Button */}
             <button
               type="submit"
+              className="auth-button"
               disabled={isLoading}
-              style={{
-                width: '100%',
-                padding: '16px',
-                background: isLoading
-                  ? 'linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%)'
-                  : 'linear-gradient(135deg, #dc2626 0%, #b91c1c 50%, #991b1b 100%)',
-                border: 'none',
-                borderRadius: '12px',
-                color: '#ffffff',
-                fontSize: '16px',
-                fontWeight: '700',
-                cursor: isLoading ? 'not-allowed' : 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: isLoading
-                  ? 'none'
-                  : '0 10px 30px rgba(220, 38, 38, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-                position: 'relative',
-                overflow: 'hidden',
-                letterSpacing: '0.5px',
-                textTransform: 'uppercase'
-              }}
-              onMouseEnter={(e) => {
-                if (!isLoading) {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 15px 40px rgba(220, 38, 38, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 10px 30px rgba(220, 38, 38, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)';
-              }}
             >
-              {isLoading ? (
-                <span>Signing In...</span>
-              ) : (
-                <span>Sign In</span>
-              )}
+              {isLoading ? 'Signing In...' : 'Sign In'}
             </button>
-
-            <style>{`
-              @keyframes slideIn {
-                from {
-                  opacity: 0;
-                  transform: translateY(-10px);
-                }
-                to {
-                  opacity: 1;
-                  transform: translateY(0);
-                }
-              }
-              
-              @keyframes spin {
-                from { transform: rotate(0deg); }
-                to { transform: rotate(360deg); }
-              }
-            `}</style>
           </form>
 
           <div style={{
-            marginTop: '28px',
+            marginTop: '2rem',
             textAlign: 'center',
             color: '#94a3b8',
-            fontSize: '14px'
+            fontSize: '0.9rem'
           }}>
             Don't have an account?{' '}
-            <a
-              href="/signup"
-              style={{
-                color: '#dc2626',
-                textDecoration: 'none',
-                fontWeight: '600',
-                transition: 'color 0.2s ease'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.color = '#f87171'}
-              onMouseLeave={(e) => e.currentTarget.style.color = '#dc2626'}
-            >
+            <Link to="/signup" className="auth-link">
               Sign Up
-            </a>
+            </Link>
           </div>
         </div>
       </div>
