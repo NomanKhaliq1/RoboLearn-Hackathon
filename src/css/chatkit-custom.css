@@ -85,7 +85,7 @@
 /* Body */
 .chatkit-body {
   background-color: var(--chat-bg);
-  padding: 20px;
+  padding: 10px;
   flex-grow: 1;
   overflow-y: auto;
   display: flex;
