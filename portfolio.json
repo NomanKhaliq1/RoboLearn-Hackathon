@@ -1,0 +1,18 @@
+{
+  "title": "RoboLearn",
+  "description": "Documentation platform for physical AI and humanoid robotics, covering ROS 2, robot simulation, vision-language-action models and hardware setup, with an AI assistant answering from the docs.",
+  "techTags": [
+    "Docusaurus",
+    "TypeScript",
+    "OpenAI ChatKit",
+    "Gemini",
+    "React"
+  ],
+  "source": "github",
+  "category": "AI",
+  "live_url": "",
+  "repo_name": "RoboLearn-Hackathon",
+  "repo_link": true,
+  "image": "/projects/robolearn.webp",
+  "fetch": true
+}
